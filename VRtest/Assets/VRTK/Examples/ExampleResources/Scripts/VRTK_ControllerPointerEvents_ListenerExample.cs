@@ -4,6 +4,7 @@
 
     public class VRTK_ControllerPointerEvents_ListenerExample : MonoBehaviour
     {
+        public HighlightTarget highlightTarget;
         public bool showHoverState = false;
 
         private void Start()
@@ -33,11 +34,13 @@
 
         private void DoPointerIn(object sender, DestinationMarkerEventArgs e)
         {
+            highlightTarget.SetHighlightMaterial(e.target);
             DebugLogger(VRTK_ControllerReference.GetRealIndex(e.controllerReference), "POINTER IN", e.target, e.raycastHit, e.distance, e.destinationPosition);
         }
 
         private void DoPointerOut(object sender, DestinationMarkerEventArgs e)
         {
+            highlightTarget.SetInitailMaterial(e.target);
             DebugLogger(VRTK_ControllerReference.GetRealIndex(e.controllerReference), "POINTER OUT", e.target, e.raycastHit, e.distance, e.destinationPosition);
         }
 
