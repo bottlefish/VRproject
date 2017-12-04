@@ -4,11 +4,21 @@
 
     public class VRTK_ControllerPointerEvents_ListenerExample : MonoBehaviour
     {
-        public HighlightTarget highlightTarget;
+        
         public bool showHoverState = false;
-        private bool triggerPressed = false;
-        public bool fllow = false;
-        public GameObject target;
+
+
+        ///////////////////////我们写的
+        //状态
+        public bool isChoosing = false;             //是否进入选中物体状态
+        //物体
+        public GameObject pointingTarget;           //射线打到的东西
+        public GameObject chosenTarget;             //被选中的东西
+        public GameObject highlightTarget;             //被选中的东西
+        //变量
+        private bool triggerPressed = false;        //是否按下了扳机
+        private bool haveDoOnce = false;                //是否只执行了一次
+        ///////////////////////我们写的
 
         private void Start()
         {
@@ -42,35 +52,30 @@
         {
             string targetName = (target ? target.name : "<NO VALID TARGET>");
             string colliderName = (raycastHit.collider ? raycastHit.collider.name : "<NO VALID COLLIDER>");
-           // VRTK_Logger.Info("Controller on index '" + index + "' is " + action + " at a distance of " + distance + " on object named [" + targetName + "] on the collider named [" + colliderName + "] - the pointer tip position is/was: " + tipPosition);
+            //VRTK_Logger.Info("Controller on index '" + index + "' is " + action + " at a distance of " + distance + " on object named [" + targetName + "] on the collider named [" + colliderName + "] - the pointer tip position is/was: " + tipPosition);
         }
 
         private void DoPointerIn(object sender, DestinationMarkerEventArgs e)
         {
-            target = e.target.gameObject;
-            highlightTarget.SetHighlightMaterial(e.target);
+            ///////////////////////我们写的
+            pointingTarget = e.target.gameObject;
+            ///////////////////////我们写的
             DebugLogger(VRTK_ControllerReference.GetRealIndex(e.controllerReference), "POINTER IN", e.target, e.raycastHit, e.distance, e.destinationPosition);
         }
 
         private void DoPointerOut(object sender, DestinationMarkerEventArgs e)
         {
-            target = null;
-            highlightTarget.SetInitailMaterial(e.target);
+            ///////////////////////我们写的
+            pointingTarget = null;
+            ///////////////////////我们写的
             DebugLogger(VRTK_ControllerReference.GetRealIndex(e.controllerReference), "POINTER OUT", e.target, e.raycastHit, e.distance, e.destinationPosition);
         }
 
         private void DoPointerHover(object sender, DestinationMarkerEventArgs e)
         {
-            if(triggerPressed)
-            {
-                fllow = true;
-                
-            }
-            if(!triggerPressed)
-            {
-                fllow = false;
-                target = null;
-            }
+            ///////////////////////我们写的
+            pointingTarget = e.target.gameObject;
+            ///////////////////////我们写的
             DebugLogger(VRTK_ControllerReference.GetRealIndex(e.controllerReference), "POINTER HOVER", e.target, e.raycastHit, e.distance, e.destinationPosition);
         }
 
@@ -78,5 +83,32 @@
         {
             DebugLogger(VRTK_ControllerReference.GetRealIndex(e.controllerReference), "POINTER DESTINATION", e.target, e.raycastHit, e.distance, e.destinationPosition);
         }
+
+        ///////////////////////我们写的
+        private void Update() {
+            //判断跟随状态
+            if (triggerPressed && pointingTarget != null) {
+                isChoosing = true;
+            }
+            if(!triggerPressed) {
+                isChoosing = false;
+            }
+
+            //执行跟随状态
+            if (isChoosing) {
+                //do once
+                if (!haveDoOnce) {
+                    chosenTarget = pointingTarget;
+                    highlightTarget = chosenTarget;
+                    haveDoOnce = true;
+                }
+            }
+            else {
+                chosenTarget = null;
+                haveDoOnce = false;
+                highlightTarget = pointingTarget;
+            }
+        }
+        ///////////////////////我们写的
     }
 }
