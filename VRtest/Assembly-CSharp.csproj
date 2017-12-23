@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Scripts\Cube.cs" />
+     <Compile Include="Assets\Scripts\CubeParent.cs" />
      <Compile Include="Assets\Scripts\HighlightTarget.cs" />
      <Compile Include="Assets\Scripts\PlayerOperation.cs" />
      <Compile Include="Assets\SteamVR\Extras\SteamVR_GazeTracker.cs" />
