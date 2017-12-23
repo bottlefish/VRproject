@@ -19,6 +19,7 @@ public class Cube : MonoBehaviour
 
     void Awake()
     {
+        //transform.localScale = Vector3.one;
         rightController = GameObject.FindWithTag("RightController");
         render = GetComponent<MeshRenderer>();
         originMat = render.material;

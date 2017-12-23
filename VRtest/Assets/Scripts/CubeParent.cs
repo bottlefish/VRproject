@@ -24,7 +24,7 @@ public class CubeParent : MonoBehaviour {
 
     void Awake() {
         originPos = transform.position;
-        transform.position += new Vector3(0,originCount * length,0);
+        transform.position = originPos + new Vector3(0,originCount * length);
     }
 
     public void Update()
@@ -37,6 +37,6 @@ public class CubeParent : MonoBehaviour {
                 nowCount = 0;
             }
         }
-        transform.position = originPos + new Vector3(0, nowCount * length);
+        transform.position = originPos + new Vector3(0, nowCount * length,0);
     }
 }
